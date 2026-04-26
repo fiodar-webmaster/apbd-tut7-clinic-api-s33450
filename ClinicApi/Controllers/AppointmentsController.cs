@@ -16,7 +16,7 @@ public class AppointmentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAppointments([FromQuery] string? status, [FromQuery] string? patientLastName)
+    public async Task<IActionResult> GetAppointments(string? status, string? patientLastName)
     {
         var appointments = await _service.GetAppointmentsAsync(status, patientLastName);
         return Ok(appointments);

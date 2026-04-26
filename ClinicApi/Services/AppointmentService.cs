@@ -95,8 +95,8 @@ public class AppointmentService : IAppointmentService
         
         const string checkExistenceSql = @"
     SELECT 
-        (SELECT COUNT(1) FROM dbo.Patients WHERE IdPatient = @IdPatient) AS PatientCount,
-        (SELECT COUNT(1) FROM dbo.Doctors WHERE IdDoctor = @IdDoctor) AS DoctorCount;
+        (SELECT COUNT(1) FROM dbo.Patients WHERE IdPatient = @IdPatient AND IsActive = 1) AS PatientCount,
+        (SELECT COUNT(1) FROM dbo.Doctors WHERE IdDoctor = @IdDoctor AND IsActive = 1) AS DoctorCount;
 ";
         
         await using var existenceCommand = new SqlCommand(checkExistenceSql, connection);
@@ -158,8 +158,8 @@ public class AppointmentService : IAppointmentService
         
         const string checkExistenceSql = @"
     SELECT 
-        (SELECT COUNT(1) FROM dbo.Patients WHERE IdPatient = @IdPatient) AS PatientCount,
-        (SELECT COUNT(1) FROM dbo.Doctors WHERE IdDoctor = @IdDoctor) AS DoctorCount;
+        (SELECT COUNT(1) FROM dbo.Patients WHERE IdPatient = @IdPatient AND IsActive = 1) AS PatientCount,
+        (SELECT COUNT(1) FROM dbo.Doctors WHERE IdDoctor = @IdDoctor AND IsActive = 1) AS DoctorCount;
 ";
         
         await using var existenceCommand = new SqlCommand(checkExistenceSql, connection);
@@ -188,7 +188,7 @@ public class AppointmentService : IAppointmentService
         ";
         
         
-        await using var command = new SqlCommand(checkExistenceSql, connection);
+        await using var command = new SqlCommand(currentStateSql, connection);
         command.Parameters.AddWithValue("@IdAppointment", idAppointment);
 
         await connection.OpenAsync();
